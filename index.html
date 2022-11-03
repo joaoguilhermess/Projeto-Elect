@@ -16,7 +16,8 @@
 			user-select: none;
 			box-sizing: border-box;
 			font-family: "Whitney";
-			font-size: 16px;
+			font-size: 18px;
+			transition-duration: 0.5s;
 		}
 
 		::-webkit-scrollbar {
@@ -40,11 +41,11 @@
 		}
 
 		body {
+			padding: 0em;
 			display: flex;
 			flex-direction: column;
 			background-color: #ffffff;
 		}
-
 		.dark {
 			background-color: #343434;
 		}
@@ -52,9 +53,21 @@
 		.top {
 			display: flex;
 			width: 100%;
-			padding: 1.5em;
-			background-color: #ff3030;
+			padding-left: 2em;
+			padding-right: 2em;
+			background-color: #303030;
 			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+			justify-content: center;
+			align-items: center;
+		}
+
+		.top .title {
+			height: fit-content;
+			width: fit-content;
+			text-shadow: 1px;
+			font-size: 1.2em;
+			color: #ffffff;
+			padding: 0.5em;
 		}
 
 		.top .percent {
@@ -65,6 +78,27 @@
 			font-size: 1.35em;
 			font-weight: 700;
 			letter-spacing: 2px;
+			padding: 0.5em;
+			margin-right: auto;
+		}
+
+		.top .time {
+			display: flex;
+			flex-direction: rows;
+			justify-content: center;
+			align-items: center;
+			padding: 0.25em;
+		}
+
+		.top .time .title {
+			font-size: 1.2em;
+			color: #ffffff;
+		}
+
+		.top .time .delay {
+			font-size: 1.35em;
+			font-weight: 700;
+			color: #ffffff;
 		}
 
 		.main {
@@ -98,15 +132,15 @@
 			fill: #ffffff;
 		}
 		.dark .main .left .brasil .estado {
-			fill: #808080;
+			fill: #303030;
 		}
 
 		.main .right {
 			display: flex;
 			width: 50%;
 			background-color: #00000015;
-			justify-content: center;
-			align-items: center;
+			justify-content: left;
+			align-items: top;
 			box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 			flex-wrap: wrap;
 			overflow-y: auto;
@@ -117,15 +151,18 @@
 
 		.main .right .estado {
 			display: flex;
-			width: calc(100%/4);
-			min-width: fit-content;
-			max-width: 100%;
-			padding: 0.5em;
-			margin: 0.5em;
+			width: calc(100%/2);
+			min-width: calc(100%/3);
+			padding: 0;
+			margin: 0.5em
 			background-color: #00000015;
 			height: fit-content;
+			white-space: nowrap;
+			justify-content: left;
 			align-items: center;
 			box-shadow: 0 0 2.5px rgba(0, 0, 0, 0.15);
+			border-left-width: 8px;
+			border-left-style: solid;
 		}
 		.dark .right .estado {
 			background-color: #363636;
@@ -144,11 +181,10 @@
 		}
 
 		.main .right .estado .name {
-			display: flex;
+			display: flex
 			padding: 0.5em;
-			margin-right: auto;
-			justify-content: center;
-			align-items: center;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 		.main .right .estado .name {
 			color: #eeeeee;
@@ -160,16 +196,65 @@
 			font-weight: 700;
 			justify-content: center;
 			align-items: center;
+			margin-left: auto;
 		}
 		.main .right .estado .percent {
 			color: #eeeeee;
 		}
 
+		.bottom {
+			display: flex;
+			height: fit-content;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.bottom .left {
+			display: flex;
+			justify-content: left;
+			align-items: center;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+		}
+
+		.bottom .right {
+			display: flex;
+			justify-content: right;
+			align-items: center;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+		}
+
+		.bottom .name {
+			color: #ffffff;
+			padding: 0.5em;
+			font-size: 1.2em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.bottom .percent {
+			color: #ffffff;
+			font-size: 1.35em;
+			padding: 0.5em;
+			font-weight: 700;
+		}
+
+		.bottom .value {
+			color: #ffffff;
+			padding: 0.5em;
+			font-size: 1.2em;
+			padding-left: 0;
+		}
 	</style>
 </head>
 <body class="dark">
 	<div class="top">
+		<div class="title">VOTOS APURADOS:</div>
 		<div class="percent">Conectando...</div>
+		<div class="time">
+			<div class="title">ATRASO:</div>
+			<div class="delay"></div>
+		</div>
 	</div>
 	<div class="main">
 		<div class="left">
@@ -209,10 +294,19 @@
 					<path class="estado RN" d="m627.5 222.91v-2.3185l1.4361-1.1918 1.4361-1.1918 1.8139 0.94578 1.8139 0.94578 6.8914 0.71835 6.8914 0.71835-0.66548-2.3447c-0.36601-1.2896-0.93734-3.5895-1.2696-5.1108l-0.60414-2.766-2.0545-2.9499c-2.0647-1.7431-3.724-2.1764-5.373-2.4491l-5.6656-0.56899h-5.3495l-4.3508-2.9221-4.3508-2.9221-2.7996 1.4478-2.7996 1.4477v0.9549c0 0.5252-1.5806 3.4258-3.5125 6.4458l-3.5125 5.4909-2.2375 1.2172-2.2375 1.2172 2.5 0.64892 2.5 0.64891 5.7215-2.8376c3.1468-1.5607 6.3612-2.8376 7.143-2.8376h1.4215l0.52075 1.357 0.52075 1.357-1.9072 2.893c-1.0489 1.5911-1.9101 3.5117-1.9138 4.268l-0.007 1.375 2.9128-0.58256 2.9128-0.58255 1.2005 1.4465 1.2005 1.4466 0.8867-0.54801 0.88669-0.548v-2.3185z"/>
 					<path class="estado RR" d="m282.5 140.42v-3.9274l2.6349-2.0726 2.6349-2.0726h3.1208l2.6917 2.5788 2.6917 2.5788 1.1271-1.3288c1.9556-2.3055 6.099-8.8848 6.099-9.6846 0-0.42187 0.91753-1.7519 2.039-2.9556l2.039-2.1886h11.922v-8.8572l-1.5714-1.5714c-0.86428-0.86429-1.9359-1.5714-2.3813-1.5714-0.44545 0-2.1914-1.413-3.8799-3.14l-3.07-3.14-0.65999-3.11-0.66-3.11-1.5215-1.7255-1.5215-1.7255 0.71157-4.7745c0.39137-2.626 0.78199-5.8995 0.86805-7.2745l0.15648-2.5 1.8864-1.5577 1.8864-1.5577-0.69709-3.1738-0.69709-3.1738-2.6746-1.3029-2.67-1.303 0.31748-4.2155 0.31748-4.2155h-6.0722l0.5149 1.3418 0.51491 1.3418-4.0492 3.6582-4.0492 3.6582h-3.7246l-2.4006 1.8883-2.4006 1.8883-3.8088 1.0517-3.8088 1.0517-1.4381-0.55187-1.4381-0.55186-1.3293 1.1032-1.3293 1.1032-0.80564-0.74132-0.80564-0.74132 0.53917 2.1932 0.53917 2.1932-1.7658 1.598-1.7658 1.598-2.8757-2.3911-2.87-2.391-5.2097 0.25089-5.2097 0.25089-1.1628-1.401-1.1628-1.401-2.6276 0.0037-2.6276 0.0037 3.25 1.9816 3.25 1.9816v8.9114l1 0.61803 1 0.61803v3.7392l1.6438 1.6438 1.6438 1.6438 2.3443-0.58839 2.3443-0.58839 3.5896 3.9732c1.9742 2.1853 4.9692 5.8777 6.6554 8.2055l3.0659 4.2323 1.0112 8.5606c0.55617 4.7083 1.0303 10.923 1.0536 13.811 0.0233 2.8875 0.29121 5.2511 0.5953 5.2524 0.3041 0.001 2.1279 1.3502 4.0529 2.9976s3.8375 2.9964 4.25 2.9977l0.75 0.002v-3.9274z"/>
 					<path class="estado AP" d="m420.17 137.27 0.61537-3.0769 5.7454-5.6731c3.16-3.1202 6.4882-6.3481 7.3961-7.1731 0.90792-0.825 2.7993-2.9625 4.2031-4.75l2.5524-3.25h2.7316l0.65866-3.511 0.65866-3.511-1.2358-1.489-1.2358-1.489h-3.652l-2.3015-2.25-2.32-2.25-2.6904-8c-1.4797-4.4-2.9744-9.575-3.3215-11.5-0.34707-1.925-1.0838-4.9625-1.6371-6.75l-1.0061-3.25h-2.1782l0.63655 0.63656 0.63656 0.63656-4.2813 4.7618-4.2813 4.7618-3.8653 7.6153-3.8653 7.6153-2.995 1.8963-2.9949 1.8963-2.4604-0.93544-2.4604-0.93544-1.7838 0.56614-1.7838 0.56614-0.67318-1.0892-0.67319-1.0892-1.2621 1.0474-1.2621 1.0474-2.3989 0.05648c-1.3194 0.03107-3.6364-0.24589-5.1489-0.61546l-2.75-0.67194v2.2332l2.25 0.0023 2.25 0.0023 3.5 2.9954 3.5 2.9953 2.1361 0.002 2.1361 0.002 1.7182 3.6209 1.7182 3.6209 1.7788 0.46517 1.7788 0.46518 0.60587 3.6639c0.33323 2.0152 0.61082 4.9014 0.61687 6.4139l0.011 2.7501h0.96104c0.52858 0 1.8786 0.98485 3 2.1886l2.039 2.1886v3.4694l2.5889 3.0767 2.5889 3.0767h4.8722l0.61537-3.0769z"/>
-					<rect class="estado ZZ" width="70" height="70" x="150" y="453" stroke="#000000" style="stroke-width:3;" />
+					<rect class="estado" width="76" height="76" x="150" y="453" fill="#00000025"/>
+					<rect class="estado ZZ" width="70" height="70" x="150" y="453" stroke="#00000015"/>
+
 					<style type="text/css">
+						@font-face {
+							font-family: "Whitney";
+							font-style: normal;
+							text-rendering: optimizeLegibility;
+							src: local("Whitney Medium"), url("whitney.woff") format("woff");
+						}
 						text {
-							style="font-family: "Whitney"; font-weight: 700;
+							font-family: "Whitney";
+							font-size: 1.2em;
 						}
 					</style>
 					<text x=390 y=536>RS</text>
@@ -235,32 +329,49 @@
 					<text x=536 y=242>PI</text>
 					<text x=496 y=204>MA</text>
 					<text x=232 y=194>AM</text>
-					<text x=607 y=246>PE</text>
-					<text x=409 y=176>PA</text>
-					<text x=625 y=230>PB</text>
-					<text x=590 y=203>CE</text>
-					<text x=624 y=213>RN</text>
-					<text x=280 y=101>RR</text>
-					<text x=412 y=105>AP</text>
+					<text x=604 y=254>PE</text>
+					<text x=398 y=194>PA</text>
+					<text x=625 y=238>PB</text>
+					<text x=578 y=210>CE</text>
+					<text x=622 y=218>RN</text>
+					<text x=278 y=108>RR</text>
+					<text x=410 y=116>AP</text>
 					<text x=176 y=494>ZZ</text>
 				</g>
 			</svg>
 		</div>
 		<div class="right">
-			<div class="estado">
-				<div class="acronym">SE</div>
-				<div class="name">Sergipe</div>
-				<div class="percent">0%</div>
-			</div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="left">
+			<div class="name"></div>
+			<div class="percent"></div>
+			<div class="value"></div>
+		</div>
+		<div class="right">
+			<div class="name"></div>
+			<div class="percent"></div>
+			<div class="value"></div>
 		</div>
 	</div>
 </body>
 	<script type="text/javascript">
 		const TopContainer = document.querySelector(".top");
 		const TopPercentContainer = document.querySelector(".top .percent");
+		const TopTime = document.querySelector(".top .time");
+		const TopTimeDelay = document.querySelector(".top .time .delay");
 		const LeftContainer = document.querySelector(".left");
 		const RightContainer = document.querySelector(".right");
 		const Brasil = document.querySelector(".left .brasil");
+		const BottomLeft = document.querySelector(".bottom .left");
+		const BottomLeftName = document.querySelector(".bottom .left .name");
+		const BottomLeftPercent = document.querySelector(".bottom .left .percent");
+		const BottomLeftValue = document.querySelector(".bottom .left .value");
+		const BottomRight = document.querySelector(".bottom .right");
+		const BottomRightName = document.querySelector(".bottom .right .name");
+		const BottomRightPercent = document.querySelector(".bottom .right .percent");
+		const BottomRightValue = document.querySelector(".bottom .right .value");
 
 		var paths = document.querySelectorAll(".left .brasil .estado");
 
@@ -270,6 +381,10 @@
 			if (paths[i].classList[1]) {
 				Estados[paths[i].classList[1]] = paths[i];
 			}
+		}
+
+		document.onclick = function() {
+			document.body.requestFullscreen();
 		}
 
 		const Norte = ["AC", "AM", "AP", "PA", "RO", "RR", "TO"];
@@ -294,29 +409,50 @@
 		// 	Estados[Sul[i]].style.fill = "#f0f020";
 		// }
 
-		var turn = 544;
+		var turno = 545;
 		var code = "br";
 
 		async function update() {
-			var f = await fetch(
-				"https://resultados.tse.jus.br/oficial/ele2022/" + turn +
-				"/dados-simplificados/" + code + "/" + code + "-c0001-e000" + turn + "-r.json"
-			);
-			var json = await f.json();
-			var candidatos = json.cand;
+			//var f = await fetch(
+			//	"https://resultados.tse.jus.br/oficial/ele2022/" + turno +
+			//	"/dados-simplificados/" + code + "/" + code + "-c0001-e000" + turno + "-r.json"
+			//);
+			var f = await fetch("/votos/" + turno + "/" + code);
+			var brjson = await f.json();
+			var candidatos = brjson.cand;
 
-			TopPercentContainer.textContent = "Votos Apurados: " + json.pst + "%";
+			TopPercentContainer.textContent = brjson.pst + "%";
 
-			// <div class="estado">
-			// 	<div class="acronym">SE</div>
-			// 	<div class="name">Sergipe</div>
-			// 	<div class="percent">0%</div>
-			// </div>
+			TopTimeDelay.textContent = (new Date(Date.now() - (new Date("01/01/1970 " + brjson.ht)).getTime() -21 * 60 * 60 * 1000)).toLocaleString().split(" ")[1];
+
+			if (!parseFloat(brjson.tv) > 0) {return}
+
+			BottomLeft.style.width = candidatos[0].pvap.replace(",", ".") + "%";
+			BottomLeftName.textContent = candidatos[0].n + " | " + candidatos[0].nm;
+			BottomLeftPercent.textContent = candidatos[0].pvap + "%";
+			BottomLeftValue.textContent = candidatos[0].vap;
+
+			BottomRight.style.width = candidatos[1].pvap.replace(",", ".") + "%";
+	
+			BottomRightName.textContent = candidatos[1].n + " | " + candidatos[1].nm;
+			BottomRightPercent.textContent = candidatos[1].pvap + "%";
+			BottomRightValue.textContent = candidatos[1].vap;
+
+			if (candidatos[0].n == 13) {
+				TopContainer.style.backgroundColor = "#ff2020";
+				BottomLeft.style.backgroundColor = "#ff2020";
+				BottomRight.style.backgroundColor = "#2020ff";
+			}
+			if (candidatos[0].n == 22) {
+				TopContainer.style.backgroundColor = "#2020ff"
+				BottomLeft.style.backgroundColor = "#2020ff";
+				BottomRight.style.backgroundColor = "#ff2020";
+			}
 
 			var l = Object.keys(Estados);
 			for (var i = 0; i < l.length; i++) {
-				if (document.getElementById(l[i])) {
-					var estado = document.createElement("div");
+				if (document.querySelector("#" + l[i])) {
+					var estado = document.querySelector("#" + l[i]);
 					var acronym = estado.querySelector(".acronym");
 					var name = estado.querySelector(".name");
 					var percent = estado.querySelector(".percent");
@@ -338,18 +474,22 @@
 					estado.append(percent);
 					RightContainer.append(estado);
 				}
-
 				try {
-					var f = await fetch(
-						"https://resultados.tse.jus.br/oficial/ele2022/" + turn +
-						"/dados-simplificados/" + l[i].toLocaleLowerCase() + "/" + l[i].toLocaleLowerCase() + "-c0001-e000" + turn + "-r.json"
-					);
+					var f = await fetch("/votos/" + turno + "/" + l[i].toLocaleLowerCase());
 					var json = await f.json();
 					var candidatos = json.cand;
 
 					acronym.textContent = l[i];
-					name.textContent = Estados[l[i]];
-					percent.textContent = "2452%";
+					name.textContent = candidatos[0].n + " | " + candidatos[0].nm;
+					percent.textContent = candidatos[0].pvap + "% Total: " + json.pst + "%";
+
+					if (candidatos[0].n == 13) {
+						Estados[l[i]].style.fill = "rgb(255, 80, 80, " + (parseFloat(json.pst)/100) + ")";
+						estado.style.borderColor = "#ff2020";
+					} else if (candidatos[0].n == 22) {
+						Estados[l[i]].style.fill = "rgb(80, 80, 255, " + (parseFloat(json.pst)/100) + ")";
+						estado.style.borderColor = "#2020ff";
+					}
 				} catch {}
 			}
 		}
